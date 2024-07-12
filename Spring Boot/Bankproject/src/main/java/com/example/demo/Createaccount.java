@@ -15,6 +15,7 @@ public class Createaccount {
 	String mar_status;
 	String occupation;
 	double balance;
+	String img;
 	String msg=null;
 	
 	public Createaccount() {
@@ -150,6 +151,15 @@ public class Createaccount {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+	
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	@Override

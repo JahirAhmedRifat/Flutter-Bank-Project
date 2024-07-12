@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.ApplyforloanRepo;
 
-@CrossOrigin(origins = "http://localhost:4200/")
+//@CrossOrigin(origins = "http://localhost:4200/") // For Angular 
+
+@CrossOrigin(origins = "*")   //----for Flutter + Angular sobai kaj kora
+
 @RestController
 
 public class AdminController {
@@ -23,6 +26,26 @@ public class AdminController {
 	public AdminController(ApplyforloanRepo applyforloanrepo) {
 		this.applyforloanrepo = applyforloanrepo;
 	}
+	
+//	------------------------ Search by Account number // Flutter --------------------
+	
+	@GetMapping(value="/search/{id}")
+	public List<Createaccount> serach(@PathVariable("id") double a_number){
+		AdminDA da = new AdminDA();
+		List<Createaccount> stlist=new ArrayList<>();
+		stlist=da.searchaccnumber_getinfo(a_number);
+		return stlist;
+	}
+	
+	// ------------------------ Check balance By User// flutter  ---------------------------
+
+		@GetMapping(value="/getAndCheck/{a_number}/{password}")
+		public List<Createaccount> getAndCheck(@PathVariable("a_number") double a_number, @PathVariable("password") String password) {
+			AdminDA da = new AdminDA();
+			List<Createaccount> stlist=new ArrayList<>();
+			stlist = da.getAndCheck(a_number, password);
+			return stlist;
+		}
 
 //	-------------------- Apply for loan (insert kora hibernate diya ) -------------
 
@@ -111,7 +134,7 @@ public class AdminController {
 
 //---------------------************Admin Part***************----------------------------------------
 
-//	-------------------- Admin part  //user application for create an account ---------------------------
+//	--------------------user apply for create an account ---------------------------
 
 	@PostMapping("/createaccount")
 	public Applyaccount docreate(@RequestBody Applyaccount s) {
@@ -161,7 +184,7 @@ public class AdminController {
 		return data;
 	}
 
-//	------------------ show application for account/ admin page ya--------------------------- 
+//	------------------ show application for account--------------------------- 
 
 	List<Applyaccount> applydata = new ArrayList<>();
 
@@ -174,13 +197,22 @@ public class AdminController {
 		return applydata;
 	}
 
-//------------------------ admin login ---------------------------
+//------------------------ admin login --------------------------- 
 
 	@GetMapping("/adminlogin/{id}/{password}")
 	public Admin login(@PathVariable int id, @PathVariable String password) {
 		AdminDA da = new AdminDA();
 		Admin data = da.login(id, password);
 		return data;
+	}
+	
+	//------------------------ admin login // Flutter --------------------------- 
+
+	@PostMapping(value="/loginadmin")
+	public Admin signinadmin(@RequestBody Admin s) {
+		AdminDA da = new AdminDA();
+		Admin st = da.adminSignin(s.id);
+		return st;
 	}
 
 	// ------------------------ search by admin Id and get -------------------

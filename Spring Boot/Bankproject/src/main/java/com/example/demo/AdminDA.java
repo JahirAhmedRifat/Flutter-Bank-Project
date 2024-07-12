@@ -4,12 +4,68 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminDA {
+	
+//	---------------- Flutter// search by account no. & get account info -----------------
+	
+	public List<Createaccount> searchaccnumber_getinfo(double a_number) {
+		List<Createaccount> stlist = new ArrayList<>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/abcd", "root", "nclc123456");
+			PreparedStatement	pstmt = con.prepareStatement("select * from createaccount where a_number=" + a_number);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Createaccount ac=new Createaccount(rs.getDouble(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+						rs.getString(10), rs.getString(11), rs.getString(12), rs.getDouble(13));
+				
+				ac.setImg(rs.getString(14)); 
+				
+				stlist.add(ac);
+			}
+			con.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return stlist;
+	}
+	
+//	------------------------------Check balance by User // flutter ---------------
 
-//	-------------------- Admin login ----------------------
+	public List<Createaccount> getAndCheck(double a_number, String password) {
+		List<Createaccount> stlist = new ArrayList<>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/abcd", "root", "nclc123456");
+			PreparedStatement ps = con.prepareStatement("select * from createaccount where a_number=? and password=?");
+
+			ps.setDouble(1, a_number);
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Createaccount ac= new Createaccount(rs.getDouble(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+						rs.getString(10), rs.getString(11), rs.getString(12), rs.getDouble(13));
+				ac.setImg(rs.getString(14)); 
+				stlist.add(ac);
+				
+			}
+			con.close();
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return stlist;
+	}
+
+//	-------------------- Admin login ---------------------- 
 
 	public Admin login(int id, String password) {
 		Admin e = null;
@@ -32,6 +88,49 @@ public class AdminDA {
 
 		return e;
 	}
+	
+//	-------------------- Admin login // Flutter part---------------------- 
+	
+	public Admin adminSignin(int id) {
+		Admin s = new Admin();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/abcd", "root", "nclc123456");
+			PreparedStatement pstmt = con.prepareStatement("select * from admin where id=" + id);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				s =new Admin(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7));
+			}
+			
+			con.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
+
+//	public Admin adminSignin(int id, String password) {
+//		Admin e = null;
+//		try {
+//			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/abcd", "root", "nclc123456");
+//			PreparedStatement ps = con.prepareStatement("select * from admin where id=? AND password=?");
+//
+//			ps.setInt(1, id);
+//			ps.setString(2, password);
+//			ResultSet rs = ps.executeQuery();
+//
+//			while (rs.next()) {
+//				e = new Admin(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+//						rs.getString(6), rs.getString(7));
+//			}
+//
+//		} catch (Exception ex) {
+//			// TODO: handle exception
+//		}
+//
+//		return e;
+//	}
 
 //	--------------------  search by admin Id and get ----------------------
 
