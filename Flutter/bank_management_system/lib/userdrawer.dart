@@ -1,7 +1,9 @@
 import 'package:bank_management_system/applyaccount.dart';
 import 'package:bank_management_system/checkbalance.dart';
 import 'package:bank_management_system/main.dart';
+import 'package:bank_management_system/moneytransfer.dart';
 import 'package:bank_management_system/userpage.dart';
+import 'package:bank_management_system/withdraw.dart';
 import 'package:flutter/material.dart';
 
 class Userdrawer extends StatelessWidget {
@@ -66,6 +68,28 @@ class Userdrawer extends StatelessWidget {
             ),
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>Checkbalance()));
+            },
+          ),
+
+          ListTile(
+            leading: Icon(Icons.balance),
+            title: Text(
+              'Withdraw',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Withdraw()));
+            },
+          ),
+
+          ListTile(
+            leading: Icon(Icons.balance),
+            title: Text(
+              'Money Transfer',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Moneytransfer()));
             },
           ),
 

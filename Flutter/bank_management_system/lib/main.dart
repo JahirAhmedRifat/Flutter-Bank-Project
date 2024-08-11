@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 Expanded(
 
-                  flex: 2,
+                  flex: 1,
                   child:Container(
                     child: Image.asset('images/bank.jpg',
                       width: double.infinity,
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(height: 60),
+                        SizedBox(height: 100),
                         Expanded(
                           child: GridView.count(
                             crossAxisCount: 3,

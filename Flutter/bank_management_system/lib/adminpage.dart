@@ -85,7 +85,7 @@ class _MyadminpageState extends State<Myadminpage> {
                           itemBuilder: (BuildContext context, int index){
                             return Container(
                               margin: EdgeInsets.all(30),
-                              height: 80,
+                              height: 100,
                               color: Colors.amber[500],
                               child: Center(
                                 child:ElevatedButton(

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AdminDA {
 	
-//	---------------- Flutter// search by account no. & get account info -----------------
+//	---------------- Flutter// search by account no. & get account info ----------------- 
 	
 	public List<Createaccount> searchaccnumber_getinfo(double a_number) {
 		List<Createaccount> stlist = new ArrayList<>();
@@ -27,6 +27,27 @@ public class AdminDA {
 				ac.setImg(rs.getString(14)); 
 				
 				stlist.add(ac);
+			}
+			con.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return stlist;
+	}
+	
+//	---------------- Flutter// search & get loan statement ----------------- 
+	
+	public List<Loantransaction> searchAndgetloanstate(int accnumber) {
+		List<Loantransaction> stlist = new ArrayList<>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/abcd", "root", "nclc123456");
+			PreparedStatement	pstmt = con.prepareStatement("select * from loantransaction where accnumber=?");
+			pstmt.setInt(1, accnumber);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				stlist.add(new Loantransaction(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4),
+						rs.getInt(5), rs.getInt(6), rs.getDouble(7), rs.getDouble(8), rs.getString(9)));
 			}
 			con.close();
 		} catch (SQLException | ClassNotFoundException e) {
@@ -91,12 +112,12 @@ public class AdminDA {
 	
 //	-------------------- Admin login // Flutter part---------------------- 
 	
-	public Admin adminSignin(int id) {
+	public Admin adminSignin(int id, String password) {
 		Admin s = new Admin();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/abcd", "root", "nclc123456");
-			PreparedStatement pstmt = con.prepareStatement("select * from admin where id=" + id);
+			PreparedStatement pstmt = con.prepareStatement("select * from admin where id="+id+" AND password='"+password+"'");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				s =new Admin(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),

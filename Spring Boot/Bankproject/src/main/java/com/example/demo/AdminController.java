@@ -37,6 +37,16 @@ public class AdminController {
 		return stlist;
 	}
 	
+//	------------------------ Search and get loan statement// Flutter --------------------
+	
+	@GetMapping(value="/searchAndgetloanstate/{accnumber}")
+	public List<Loantransaction> searchAndgetloanstate(@PathVariable("accnumber") int accnumber){
+		AdminDA da = new AdminDA();
+		List<Loantransaction> stlist=new ArrayList<>();
+		stlist=da.searchAndgetloanstate(accnumber);
+		return stlist;
+	}
+	
 	// ------------------------ Check balance By User// flutter  ---------------------------
 
 		@GetMapping(value="/getAndCheck/{a_number}/{password}")
@@ -211,7 +221,7 @@ public class AdminController {
 	@PostMapping(value="/loginadmin")
 	public Admin signinadmin(@RequestBody Admin s) {
 		AdminDA da = new AdminDA();
-		Admin st = da.adminSignin(s.id);
+		Admin st = da.adminSignin(s.id, s.password);
 		return st;
 	}
 
